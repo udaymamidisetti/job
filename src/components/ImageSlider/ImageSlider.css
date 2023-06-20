@@ -1,0 +1,134 @@
+
+.time_container{
+    max-width: 1000px;
+    width: 100%;
+    margin: auto;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+
+.time_container > div > label {
+    font-weight: 500;
+}
+.time_inputs{
+    margin-left: 10px;
+    font-weight: 300;
+}
+.image_gallery_Container{
+    position: relative;
+    max-width: 1000px;
+    margin: auto;
+    object-fit: contain;
+}
+.image-gallery-image {
+    object-fit: cover;
+    height: 100vh;
+    width: 1000px;
+}
+.image-gallery{
+    width: 1000px;
+    object-fit: cover;
+}
+.image-gallery-play-button{
+    background-color: #000000;
+    position: absolute;
+    top: 45%;
+    bottom: 50%;
+    left: 50%;
+    right: 50%;
+    padding: 0;
+    height: 50px;
+}
+
+.settings_icon{
+    margin-left: auto;
+    padding: 20px;
+    cursor: pointer;
+    position: absolute;
+    color: white;
+    z-index: 4;
+    bottom: 0;
+    left: 88%;
+}
+.settings_icon:hover{
+    filter: drop-shadow(0 2px 2px #1a1a1a);
+    transition: all .3s ease-out;
+    color: rgb(149, 191, 255);
+    font-size: 40px;
+}
+
+
+/* .image-gallery-content .image-gallery-slide .image-gallery-image {
+    max-height: 100vh;
+    object-fit: cover;
+} */
+  
+  .timestamp-overlay {
+    position: absolute;
+    top: 10px;
+    right: 75%;
+    background-color: black;
+    color: #fff;
+    padding: 15px;
+    border-radius: 5px;
+    font-weight: 600;
+  }
+
+.dropdown_container{
+    height: 200px;
+    width: 300px;
+    background-color: #000000;
+    opacity: 0.33;
+    position: absolute;
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+    gap: 35px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    margin-left: auto;
+    transition: all .3s ease-out;
+    z-index: 1;
+    bottom: 10%;
+    right: 20px;
+    border-radius: 20px;
+    justify-content: center;
+}
+.dropdown_container>svg{
+    position: relative;
+    left: 50%;
+}
+.dropdown_container > li {
+    color: #ffffff;
+    font-size: 14px;
+    cursor: pointer;
+    padding-left: 5px;
+    padding-right: 5px;
+    border-radius: 3px;
+    font-weight: 500;
+    /* padding: 14px; */
+}
+.dropdown_container > li:hover {
+    background-color: rgb(255, 255, 255);
+    color: rgb(255, 255, 255);
+}
+
+.select-container>select{
+    height: 1.75rem;
+    width: 100px;
+}
+.select-container>select>option{
+    font-weight: bold;
+}
+
+
+.controls_container{
+    max-width: 1000px;
+    background-color: #000000;
+    height: 30px;
+    margin: auto;
+}
+    
