@@ -18,7 +18,7 @@ const ImageSlider = () => {
   const [toTime, setToTime] = useState();
   const [dropdown, setDropdown] = useState(false);
   const [id, setId] = useState(5);
-  const [playback, setPlayback] = useState(3000);
+  const [playback, setPlayback] = useState(300);
   const [isPlaying, setIsPlaying] = useState(true);
   const [loading, setLoading] = useState(false);
   const [date, setDate] = useState(todayDate);
