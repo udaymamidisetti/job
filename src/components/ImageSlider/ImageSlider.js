@@ -13,8 +13,7 @@ import { Input } from "@mui/material";
 import { ClipLoader } from "react-spinners";
 const ImageSlider = () => {
   let todayDate = DateTime.now().toFormat("yyyy-MM-dd");
-  const [filtered, setFiltered] = useState();
-  const [fromTime, setFromTime] = useState("02:00");
+  const [fromTime, setFromTime] = useState();
   const [toTime, setToTime] = useState();
   const [dropdown, setDropdown] = useState(false);
   const [id, setId] = useState(5);
@@ -23,6 +22,7 @@ const ImageSlider = () => {
   const [loading, setLoading] = useState(false);
   const [date, setDate] = useState(todayDate);
   const [data, setData] = useState();
+  const [filtered, setFiltered] = useState(data);
   useEffect(() => {
     setLoading(false);
     console.log("Fetching");
@@ -61,62 +61,18 @@ const ImageSlider = () => {
               datetime,
               "MMMM dd, yyyy hh:mm:ss a"
             );
-            // console.log(datetimeObj.toFormat("hh:mm a"));
             return datetimeObj.toFormat("HH:mm");
-            // const hours = datetimeObj.toFormat("HH");
-            // const minutes = datetimeObj.toFormat("mm");
-            // const seconds = datetimeObj.toFormat("ss");
-            // const amPm = hours >= 12 ? "PM" : "AM";
-            // // const formattedHours = hours % 12 === 0 ? 12 : hours % 12;
-            // return `${hours}:${minutes} ${seconds}`;
           };
-
           const extractedTimes = galleryImages.map((item) =>
             getTimeFromDatetime(item.time)
           );
-          // const startTime = DateTime.local().toFormat('hh:mm a')
-          const formatTime = (time) => {
-            const [hour, minute, period] = time.split(" ");
-            const [hourNumber, minuteNumber] = hour.split(":");
-            let formattedHour = parseInt(hourNumber, 10);
-            console.log(period);
-            console.log(period);
-
-            // Adjust the hour for PM times
-            if (period === "PM" && formattedHour !== 12) {
-              formattedHour += 12;
-            }
-
-            // Adjust the hour for AM times with hour 12
-            if (period === "AM" && formattedHour === 12) {
-              formattedHour = 0;
-            }
-
-            // Pad single-digit hours and minutes with leading zeros
-            const formattedHourString = formattedHour
-              .toString()
-              .padStart(2, "0");
-            console.log(formattedHourString);
-            const formattedMinuteString = minuteNumber
-              .toString()
-              .padStart(2, "0");
-            console.log(formattedMinuteString);
-            return `${formattedHourString}:${formattedMinuteString}`;
-          };
-
-          console.log(extractedTimes[0]);
           setFromTime(extractedTimes[0]);
           setToTime(extractedTimes[extractedTimes.length - 1]);
-          // console.log(extractedTimes);
-
-          // console.log(data);
           setLoading(true);
         }
       } catch (error) {
         console.error("Error fetching data:", error);
       }
-      console.log(fromTime);
-      console.log(toTime);
     };
 
     fetchData();
@@ -133,16 +89,14 @@ const ImageSlider = () => {
     setDropdown(false);
   };
   const filteringImages = () => {
-    const filteredData = filtered.filter((image) => {
+    const filteredData = data.filter((image) => {
       if (fromTime && toTime) {
-        // const selectedStart = DateTime.fromFormat(fromTime, "hh:mm");
-        // console.log(selectedStart);
-        // const selectedEnd = DateTime.fromFormat(toTime, "hh:mm");
-        // console.log(selectedEnd);
-        const imageTime = DateTime.fromFormat(image.time, "hh:mm");
-        console.log(imageTime);
-
-        return imageTime >= fromTime && imageTime <= toTime;
+        const imageTime = DateTime.fromFormat(
+          image.time,
+          "MMMM dd, yyyy hh:mm:ss a"
+        );
+        const ImageTime = imageTime.toFormat("HH:mm");
+        return ImageTime >= fromTime && ImageTime <= toTime;
       }
     });
 
@@ -216,7 +170,6 @@ const ImageSlider = () => {
             onChange={(e) => setToTime(e.target.value)}
           />
         </div>
-        <div>{/* <button onClick={filteringImages}>Filter</button> */}</div>
         <div>
           <Input
             type="date"
@@ -228,11 +181,30 @@ const ImageSlider = () => {
         <div className="select-container">
           <input onChange={(e) => setId(e.target.value)} value={id} />
         </div>
+        <div style={{ marginLeft: "auto" }}>
+          <button
+            style={{
+              backgroundColor: "#F19828",
+              paddingLeft: "10px",
+              paddingLeft: "10px",
+              borderWidth: "0px",
+              borderRadius: "3px",
+              color: "white",
+              height: "30px",
+              fontWeight: "400",
+              width: "70px",
+              cursor: "pointer",
+            }}
+            onClick={filteringImages}
+          >
+            Filter
+          </button>
+        </div>
       </div>
       <div className="image_gallery_Container">
         {loading ? (
           <ImageGallery
-            items={data}
+            items={filtered}
             slideInterval={playback}
             slideDuration={playback}
             autoPlay
