@@ -25,14 +25,13 @@ const ImageSlider = () => {
   const [filtered, setFiltered] = useState(data);
   useEffect(() => {
     setLoading(false);
-    console.log("Fetching");
     const fetchData = async () => {
       try {
         const response = await axios.request(
           `https://jobmanager.in/react-api.php?current_date=${date}&uid=${id}`
         );
         const jsonData = await response.data;
-        if (jsonData) {
+        if (typeof jsonData === "object") {
           const updatedArray = Object.keys(jsonData).map((key) => {
             const updatedDateTime = updatedDate(jsonData[key].date_info);
             const updatedScreenshot = updatedScreenshotValue(
@@ -69,6 +68,9 @@ const ImageSlider = () => {
           setFromTime(extractedTimes[0]);
           setToTime(extractedTimes[extractedTimes.length - 1]);
           setLoading(true);
+        } else if (typeof jsonData === "string") {
+          setData(jsonData);
+          setLoading(true);
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -79,29 +81,29 @@ const ImageSlider = () => {
   }, [date, id]);
   const handleDateChange = (event) => {
     setDate(event.target.value);
-    console.log(date);
   };
   const handleDropdown = () => {
     setDropdown(true);
-    console.debug(dropdown);
   };
   const hideDropdown = () => {
     setDropdown(false);
   };
   const filteringImages = () => {
-    const filteredData = data.filter((image) => {
-      if (fromTime && toTime) {
-        const imageTime = DateTime.fromFormat(
-          image.time,
-          "MMMM dd, yyyy hh:mm:ss a"
-        );
-        const ImageTime = imageTime.toFormat("HH:mm");
-        return ImageTime >= fromTime && ImageTime <= toTime;
-      }
-    });
-
-    setFiltered(filteredData);
-    console.log(filteredData);
+    if (typeof data === "object") {
+      const filteredData = data.filter((image) => {
+        if (fromTime && toTime) {
+          const imageTime = DateTime.fromFormat(
+            image.time,
+            "MMMM dd, yyyy hh:mm:ss a"
+          );
+          const ImageTime = imageTime.toFormat("HH:mm");
+          return ImageTime >= fromTime && ImageTime <= toTime;
+        }
+      });
+      setFiltered(filteredData);
+    } else {
+      return null;
+    }
   };
   const renderItem = (item) => {
     return (
@@ -122,37 +124,54 @@ const ImageSlider = () => {
     setIsPlaying(false);
   };
 
-  // const fetchFilteredImages = async () => {
-  //   // if (fromTime && toTime) {
-  //   const url = "https://jobmanager.in/react-api.php";
-  //   const body = {
-  //     from_date: `${date} ${fromTime}`,
-  //     to_date: `${date} ${toTime}`,
-  //     uid: id,
-  //   };
-  //   console.log(body);
-  //   const requestMetadata = {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify(body),
-  //   };
-
-  //   const response = await fetch(url, requestMetadata);
-  //   // const FilteredData = await response.json();
-  //   console.log(response);
-  //   // }
-  // };
-
+  const renderRecords = () => {
+    return typeof data === "object" ? (
+      <ImageGallery
+        items={filtered}
+        slideInterval={playback}
+        slideDuration={playback}
+        autoPlay
+        renderItem={renderItem}
+        showIndex
+        showNav={isPlaying}
+        // showPlayButton={false}
+        onPlay={handlePlay}
+        onPause={handlePause}
+        lazyLoad
+        renderCustomControls={() => {
+          return (
+            <div>
+              {dropdown ? (
+                <ul className="dropdown_container" onMouseLeave={hideDropdown}>
+                  <li onClick={() => setPlayback(100)}>2X</li>
+                  <li onClick={() => setPlayback(200)}>1X</li>
+                  <li onClick={() => setPlayback(300)}>0</li>
+                  <li onClick={() => setPlayback(4000)}>0.1X</li>
+                  <li onClick={() => setPlayback(5000)}>0.2X</li>
+                </ul>
+              ) : null}
+              <SettingsIcon
+                style={{ height: "33px", width: "33px", color: "white" }}
+                className="settings_icon"
+                // onClick={handleDropdown}
+                onMouseEnter={handleDropdown}
+              />
+            </div>
+          );
+        }}
+      />
+    ) : (
+      <div className="record-container">
+        <h1 className="no-record">{data}</h1>
+      </div>
+    );
+  };
   return (
     <div>
       <div className="time_container">
         <div>
           <label htmlFor="From_time">From</label>
           <input
-            min="6:00"
-            max="24:00"
             type="time"
             id="From_time"
             className="time_inputs"
@@ -186,7 +205,6 @@ const ImageSlider = () => {
             style={{
               backgroundColor: "#F19828",
               paddingLeft: "10px",
-              paddingLeft: "10px",
               borderWidth: "0px",
               borderRadius: "3px",
               color: "white",
@@ -203,43 +221,7 @@ const ImageSlider = () => {
       </div>
       <div className="image_gallery_Container">
         {loading ? (
-          <ImageGallery
-            items={filtered}
-            slideInterval={playback}
-            slideDuration={playback}
-            autoPlay
-            renderItem={renderItem}
-            showIndex
-            showNav={isPlaying}
-            // showPlayButton={false}
-            onPlay={handlePlay}
-            onPause={handlePause}
-            lazyLoad
-            renderCustomControls={() => {
-              return (
-                <div>
-                  {dropdown ? (
-                    <ul
-                      className="dropdown_container"
-                      onMouseLeave={hideDropdown}
-                    >
-                      <li onClick={() => setPlayback(100)}>2X</li>
-                      <li onClick={() => setPlayback(200)}>1X</li>
-                      <li onClick={() => setPlayback(300)}>0</li>
-                      <li onClick={() => setPlayback(4000)}>0.1X</li>
-                      <li onClick={() => setPlayback(5000)}>0.2X</li>
-                    </ul>
-                  ) : null}
-                  <SettingsIcon
-                    style={{ height: "33px", width: "33px", color: "white" }}
-                    className="settings_icon"
-                    // onClick={handleDropdown}
-                    onMouseEnter={handleDropdown}
-                  />
-                </div>
-              );
-            }}
-          />
+          renderRecords()
         ) : (
           <div
             style={{

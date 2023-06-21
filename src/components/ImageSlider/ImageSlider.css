@@ -81,7 +81,7 @@
     height: 200px;
     width: 300px;
     background-color: #000000;
-    opacity: 0.33;
+    opacity: 0.83;
     position: absolute;
     list-style-type: none;
     display: flex;
@@ -130,5 +130,13 @@
     background-color: #000000;
     height: 30px;
     margin: auto;
+}
+.no-record{
+}
+.record-container{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
     
