@@ -10,12 +10,32 @@
 }
 
 
+
 .time_container > div > label {
     font-weight: 500;
+    font-display: 'Open Sans', sans-serif;
 }
 .time_inputs{
     margin-left: 10px;
-    font-weight: 300;
+    border-width: 0px;
+    background-color: #f0f0f0;
+    padding: 7px;
+    border-radius: 4px;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+}
+.time_inputs:focus{
+    outline: none;
+}
+.id-input{
+    padding: 9px;
+    background-color: #f0f0f0;
+    border-width: 0px;
+    border-radius: 4px;
+}
+.id-input:focus{
+    outline: none;
 }
 .image_gallery_Container{
     position: relative;

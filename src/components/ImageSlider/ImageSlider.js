@@ -16,7 +16,7 @@ const ImageSlider = () => {
   const [fromTime, setFromTime] = useState();
   const [toTime, setToTime] = useState();
   const [dropdown, setDropdown] = useState(false);
-  const [id, setId] = useState(5);
+  const [id, setId] = useState(1);
   const [playback, setPlayback] = useState(300);
   const [isPlaying, setIsPlaying] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -190,7 +190,8 @@ const ImageSlider = () => {
           />
         </div>
         <div>
-          <Input
+          <input
+            className="time_inputs"
             type="date"
             value={date}
             onChange={handleDateChange}
@@ -198,7 +199,12 @@ const ImageSlider = () => {
           />
         </div>
         <div className="select-container">
-          <input onChange={(e) => setId(e.target.value)} value={id} />
+          <input
+            onChange={(e) => setId(e.target.value)}
+            value={id}
+            className="id-input"
+            placeholder="Enter ID"
+          />
         </div>
         <div style={{ marginLeft: "auto" }}>
           <button
@@ -208,10 +214,11 @@ const ImageSlider = () => {
               borderWidth: "0px",
               borderRadius: "3px",
               color: "white",
-              height: "30px",
-              fontWeight: "400",
+              height: "33px",
+              fontWeight: "600",
               width: "70px",
               cursor: "pointer",
+              fontFamily: "Open Sans, sans-serif",
             }}
             onClick={filteringImages}
           >
@@ -219,7 +226,7 @@ const ImageSlider = () => {
           </button>
         </div>
       </div>
-      <div className="image_gallery_Container">
+      <div className="image_gallery_Container" style={{ marginTop: "20px" }}>
         {loading ? (
           renderRecords()
         ) : (
