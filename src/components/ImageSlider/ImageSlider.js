@@ -130,7 +130,7 @@ const ImageSlider = () => {
         items={filtered}
         slideInterval={playback}
         slideDuration={playback}
-        autoPlay
+        autoPlay={false}
         renderItem={renderItem}
         showIndex
         showNav={isPlaying}
@@ -235,15 +235,6 @@ const ImageSlider = () => {
           </div>
         )}
       </div>
-      {/* <div className="controls_container">
-        <SkipPreviousIcon style={{ color: "white" }} />
-        {isPlaying ? (
-          <PauseIcon style={{ color: "white" }} onClick={handlePlayPause} />
-        ) : (
-          <PlayArrowIcon style={{ color: "white" }} onClick={handlePlayPause} />
-        )}
-        <SkipNextIcon style={{ color: "white" }} />
-      </div> */}
     </div>
   );
 };
